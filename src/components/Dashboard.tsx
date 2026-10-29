@@ -1,11 +1,9 @@
-import { calculateSummary } from "../domain/sensors";
-import type { UpdateMode } from "../domain/sensors";
+import { SENSOR_COUNT, type UpdateMode } from "../domain/sensors";
 import { useSensorState } from "../state/SensorContext";
 import { SensorCard } from "./SensorCard";
 
 export function Dashboard() {
   const { state, dispatch } = useSensorState();
-  const summary = calculateSummary(state.sensors);
 
   return (
     <main className="dashboard">
@@ -65,24 +63,6 @@ export function Dashboard() {
         </div>
       </header>
 
-      <section className="summary" aria-label="Resumo dos sensores">
-        <article className="summary-card">
-          <span className="summary-card__label">Sensores em alerta</span>
-          <strong>{summary.alertCount}<span> / 20</span></strong>
-        </article>
-        <article className="summary-card">
-          <span className="summary-card__label">Média atual</span>
-          <strong>{summary.average.toFixed(1)}<span>%</span></strong>
-        </article>
-        <article className="summary-card summary-card--variation">
-          <span className="summary-card__label">Maior variação</span>
-          <strong>{summary.highestVariation}<span> pontos</span></strong>
-          <span className="summary-card__detail">
-            {summary.highestVariationSensor.name}
-          </span>
-        </article>
-      </section>
-
       <section className="sensor-section" aria-label="Sensores">
         <div className="section-heading">
           <div>
@@ -93,7 +73,7 @@ export function Dashboard() {
                 : "Um sensor por tick, em ordem circular · 500 ms"}
             </p>
           </div>
-          <span className="sensor-count">20 unidades</span>
+          <span className="sensor-count">{SENSOR_COUNT} unidades</span>
         </div>
 
         <div className="sensor-grid">
