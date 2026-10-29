@@ -1,4 +1,5 @@
 import { calculateSummary } from "../domain/sensors";
+import type { UpdateMode } from "../domain/sensors";
 import { useSensorState } from "../state/SensorContext";
 import { SensorCard } from "./SensorCard";
 
@@ -18,6 +19,22 @@ export function Dashboard() {
         </div>
 
         <div className="controls" role="group" aria-label="Controles da simulação">
+          <label className="mode-picker">
+            <span>Cenário</span>
+            <select
+              aria-label="Cenário de atualização"
+              value={state.mode}
+              onChange={(event) => {
+                const mode = event.currentTarget.value;
+                if (mode === "simultaneous" || mode === "localized") {
+                  dispatch({ type: "set-mode", mode: mode as UpdateMode });
+                }
+              }}
+            >
+              <option value="simultaneous">20 sensores</option>
+              <option value="localized">Um por vez</option>
+            </select>
+          </label>
           <span className={`run-state ${state.isRunning ? "run-state--active" : ""}`}>
             <span className="run-state__dot" aria-hidden="true" />
             {state.isRunning ? "Em execução" : "Pausada"}
@@ -70,7 +87,11 @@ export function Dashboard() {
         <div className="section-heading">
           <div>
             <h2>Sensores</h2>
-            <p>Atualização simultânea a cada 500 ms</p>
+            <p>
+              {state.mode === "simultaneous"
+                ? "20 sensores a cada 500 ms"
+                : "Um sensor por tick, em ordem circular · 500 ms"}
+            </p>
           </div>
           <span className="sensor-count">20 unidades</span>
         </div>

@@ -1,4 +1,5 @@
 export type SensorStatus = "ok" | "alert" | "critical";
+export type UpdateMode = "simultaneous" | "localized";
 
 export interface Sensor {
   id: number;
@@ -51,6 +52,24 @@ function nextRandom(seed: number): { seed: number; value: number } {
   return { seed: nextSeed, value: (nextSeed % 11) - 5 };
 }
 
+function updateSensor(
+  sensor: Sensor,
+  seed: number,
+): { sensor: Sensor; seed: number } {
+  const random = nextRandom(seed);
+  const value = Math.max(0, Math.min(100, sensor.value + random.value));
+
+  return {
+    seed: random.seed,
+    sensor: {
+      ...sensor,
+      value,
+      status: getSensorStatus(value),
+      history: [...sensor.history, value].slice(-HISTORY_LIMIT),
+    },
+  };
+}
+
 export function updateAllSensors(
   sensors: Sensor[],
   seed: number,
@@ -58,21 +77,27 @@ export function updateAllSensors(
   let nextSeed = seed;
 
   const updatedSensors = sensors.map((sensor) => {
-    const random = nextRandom(nextSeed);
-    nextSeed = random.seed;
-
-    const value = Math.max(0, Math.min(100, sensor.value + random.value));
-    const history = [...sensor.history, value].slice(-HISTORY_LIMIT);
-
-    return {
-      ...sensor,
-      value,
-      status: getSensorStatus(value),
-      history,
-    };
+    const updated = updateSensor(sensor, nextSeed);
+    nextSeed = updated.seed;
+    return updated.sensor;
   });
 
   return { sensors: updatedSensors, seed: nextSeed };
+}
+
+export function updateOneSensor(
+  sensors: Sensor[],
+  index: number,
+  seed: number,
+): { sensors: Sensor[]; seed: number } {
+  const sensor = sensors[index];
+  if (!sensor) return { sensors, seed };
+
+  const updated = updateSensor(sensor, seed);
+  const updatedSensors = [...sensors];
+  updatedSensors[index] = updated.sensor;
+
+  return { sensors: updatedSensors, seed: updated.seed };
 }
 
 function getVariation(sensor: Sensor): number {
