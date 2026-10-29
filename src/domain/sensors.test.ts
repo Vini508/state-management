@@ -28,6 +28,30 @@ describe("simulacao dos sensores", () => {
     expect(afterTick.sensors.every((sensor, index) => sensor !== initial.sensors[index])).toBe(true);
   });
 
+  it("atualiza um sensor por tick e percorre a lista em ordem circular", () => {
+    let state = createInitialState();
+    state = sensorReducer(state, { type: "start" });
+    state = sensorReducer(state, { type: "tick" });
+    state = sensorReducer(state, { type: "set-mode", mode: "localized" });
+
+    expect(state.isRunning).toBe(false);
+    expect(state.mode).toBe("localized");
+    state = sensorReducer(state, { type: "start" });
+
+    let previousSensors = state.sensors;
+    for (let index = 0; index < previousSensors.length; index += 1) {
+      state = sensorReducer(state, { type: "tick" });
+      const changedIndexes = state.sensors.flatMap((sensor, sensorIndex) =>
+        sensor !== previousSensors[sensorIndex] ? [sensorIndex] : [],
+      );
+
+      expect(changedIndexes).toEqual([index]);
+      previousSensors = state.sensors;
+    }
+
+    expect(state.nextSensorIndex).toBe(0);
+  });
+
   it("repete a mesma sequencia depois do reset", () => {
     const initial = createInitialState();
     const runSequence = (startingState: ReturnType<typeof createInitialState>) => {

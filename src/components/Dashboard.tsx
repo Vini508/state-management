@@ -1,4 +1,4 @@
-import { SENSOR_COUNT, type UpdateMode } from "../domain/sensors";
+import { SENSOR_COUNT } from "../domain/sensors";
 import { useSensorState } from "../state/SensorContext";
 import { SensorCard } from "./SensorCard";
 
@@ -25,7 +25,7 @@ export function Dashboard() {
               onChange={(event) => {
                 const mode = event.currentTarget.value;
                 if (mode === "simultaneous" || mode === "localized") {
-                  dispatch({ type: "set-mode", mode: mode as UpdateMode });
+                  dispatch({ type: "set-mode", mode });
                 }
               }}
             >

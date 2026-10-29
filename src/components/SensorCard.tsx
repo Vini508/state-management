@@ -4,7 +4,7 @@ interface SensorCardProps {
   sensor: Sensor;
 }
 
-export function SensorCard({ sensor }: SensorCardProps) {
+export function SensorCard({ sensor }: Readonly<SensorCardProps>) {
   return (
     <article className="sensor-card">
       <h3>{sensor.name}</h3>

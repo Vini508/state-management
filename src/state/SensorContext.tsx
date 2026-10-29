@@ -21,7 +21,7 @@ interface SensorContextValue {
 
 const SensorContext = createContext<SensorContextValue | null>(null);
 
-export function SensorProvider({ children }: PropsWithChildren) {
+export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
   const [state, dispatch] = useReducer(sensorReducer, undefined, createInitialState);
 
   useEffect(() => {
