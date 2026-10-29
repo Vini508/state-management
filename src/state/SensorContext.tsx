@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useReducer,
   type Dispatch,
   type PropsWithChildren,
@@ -36,9 +37,11 @@ export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
   }, [state.isRunning]);
 
   return (
-    <SensorContext.Provider value={{ state, dispatch }}>
-      {children}
-    </SensorContext.Provider>
+    useMemo(() => (
+      <SensorContext.Provider value={{ state, dispatch }}>
+        {children}
+      </SensorContext.Provider>
+    ), [state, dispatch])
   );
 }
 

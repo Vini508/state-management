@@ -16,7 +16,7 @@ export function Dashboard() {
           </p>
         </div>
 
-        <div className="controls" role="group" aria-label="Controles da simulação">
+        <details className="controls" aria-label="Controles da simulação">
           <label className="mode-picker">
             <span>Cenário</span>
             <select
@@ -60,7 +60,7 @@ export function Dashboard() {
           >
             Reiniciar
           </button>
-        </div>
+        </details>
       </header>
 
       <section className="sensor-section" aria-label="Sensores">
