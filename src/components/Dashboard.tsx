@@ -1,9 +1,10 @@
 import { SENSOR_COUNT } from "../domain/sensors";
-import { useSensorState } from "../state/SensorContext";
+import { useSensorDispatch, useSensorState } from "../state/SensorContext";
 import { SensorCard } from "./SensorCard";
 
 export function Dashboard() {
-  const { state, dispatch } = useSensorState();
+  const state = useSensorState();
+  const dispatch = useSensorDispatch();
 
   return (
     <main className="dashboard">

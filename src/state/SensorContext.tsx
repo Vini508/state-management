@@ -2,7 +2,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
   type Dispatch,
   type PropsWithChildren,
@@ -15,17 +14,11 @@ import {
   type SensorState,
 } from "./sensorReducer";
 
-interface SensorContextValue {
-  state: SensorState;
-  dispatch: Dispatch<SensorAction>;
-}
-
-const SensorContext = createContext<SensorContextValue | null>(null);
+const SensorStateContext = createContext<SensorState | null>(null);
+const SensorDispatchContext = createContext<Dispatch<SensorAction> | null>(null);
 
 export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
   const [state, dispatch] = useReducer(sensorReducer, undefined, createInitialState);
-  
-  const value = useMemo(() => ({ state, dispatch }), [state]);
 
   useEffect(() => {
     if (!state.isRunning) return undefined;
@@ -38,14 +31,29 @@ export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
     return () => window.clearInterval(intervalId);
   }, [state.isRunning]);
 
-  return <SensorContext.Provider value={value}>{children}</SensorContext.Provider>;
+  return (
+    <SensorStateContext.Provider value={state}>
+      <SensorDispatchContext.Provider value={dispatch}>
+        {children}
+      </SensorDispatchContext.Provider>
+    </SensorStateContext.Provider>
+  );
 }
 
-export function useSensorState(): SensorContextValue {
-  const context = useContext(SensorContext);
-  if (!context) {
+export function useSensorState(): SensorState {
+  const state = useContext(SensorStateContext);
+  if (!state) {
     throw new Error("useSensorState deve ser usado dentro de SensorProvider.");
   }
 
-  return context;
+  return state;
+}
+
+export function useSensorDispatch(): Dispatch<SensorAction> {
+  const dispatch = useContext(SensorDispatchContext);
+  if (!dispatch) {
+    throw new Error("useSensorDispatch deve ser usado dentro de SensorProvider.");
+  }
+
+  return dispatch;
 }
