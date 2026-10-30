@@ -24,6 +24,8 @@ const SensorContext = createContext<SensorContextValue | null>(null);
 
 export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
   const [state, dispatch] = useReducer(sensorReducer, undefined, createInitialState);
+  
+  const value = useMemo(() => ({ state, dispatch }), [state]);
 
   useEffect(() => {
     if (!state.isRunning) return undefined;
@@ -36,13 +38,7 @@ export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
     return () => window.clearInterval(intervalId);
   }, [state.isRunning]);
 
-  return (
-    useMemo(() => (
-      <SensorContext.Provider value={{ state, dispatch }}>
-        {children}
-      </SensorContext.Provider>
-    ), [state, dispatch])
-  );
+  return <SensorContext.Provider value={value}>{children}</SensorContext.Provider>;
 }
 
 export function useSensorState(): SensorContextValue {

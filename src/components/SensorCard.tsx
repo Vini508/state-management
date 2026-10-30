@@ -1,16 +1,17 @@
+import { memo } from "react";
 import type { Sensor } from "../domain/sensors";
 
 interface SensorCardProps {
   sensor: Sensor;
 }
 
-export function SensorCard({ sensor }: Readonly<SensorCardProps>) {
+export const SensorCard = memo(function SensorCard({ sensor }: Readonly<SensorCardProps>) {
   return (
     <article className="sensor-card">
       <h3>{sensor.name}</h3>
-      <p aria-label={`Valor atual: ${sensor.value}%`}>
+      <p>
         {sensor.value}<span>%</span>
       </p>
     </article>
   );
-}
+});

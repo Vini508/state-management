@@ -16,11 +16,11 @@ export function Dashboard() {
           </p>
         </div>
 
-        <details className="controls" aria-label="Controles da simulação">
+        <fieldset className="controls">
+          <legend className="visually-hidden">Controles da simulação</legend>
           <label className="mode-picker">
             <span>Cenário</span>
             <select
-              aria-label="Cenário de atualização"
               value={state.mode}
               onChange={(event) => {
                 const mode = event.currentTarget.value;
@@ -60,7 +60,7 @@ export function Dashboard() {
           >
             Reiniciar
           </button>
-        </details>
+        </fieldset>
       </header>
 
       <section className="sensor-section" aria-label="Sensores">

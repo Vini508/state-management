@@ -21,7 +21,7 @@ describe("dashboard de sensores", () => {
     const { container } = render(<App />);
     const values = () =>
       Array.from(container.querySelectorAll(".sensor-card p"))
-        .map((element) => element.getAttribute("aria-label"));
+        .map((element) => element.textContent);
     const initialValues = values();
 
     fireEvent.click(screen.getByRole("button", { name: "Iniciar" }));
