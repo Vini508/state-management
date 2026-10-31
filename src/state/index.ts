@@ -4,4 +4,4 @@ export {
   useSensor,
   useSensorActions,
   useSimulationMode,
-} from "./SensorContext";
+} from "./SensorProvider";
