@@ -15,6 +15,8 @@ const INITIAL_VALUES = [
   70, 15, 96, 47, 58, 80, 22, 88, 65, 38,
 ];
 
+export const SENSOR_IDS: readonly number[] = INITIAL_VALUES.map((_, index) => index + 1);
+
 export function createInitialSensors(): Sensor[] {
   return INITIAL_VALUES.map((value, index) => ({
     id: index + 1,

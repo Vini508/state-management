@@ -1,59 +1,72 @@
 import {
   createContext,
   useContext,
-  useEffect,
+  useMemo,
   useReducer,
-  type Dispatch,
   type PropsWithChildren,
 } from "react";
-import { TICK_INTERVAL_MS } from "../domain/sensors";
+import type { SensorActions } from "../domain/contract";
+import type { Sensor, UpdateMode } from "../domain/sensors";
 import {
   createInitialState,
   sensorReducer,
-  type SensorAction,
   type SensorState,
 } from "./sensorReducer";
 
 const SensorStateContext = createContext<SensorState | null>(null);
-const SensorDispatchContext = createContext<Dispatch<SensorAction> | null>(null);
+const SensorActionsContext = createContext<SensorActions | null>(null);
 
 export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
   const [state, dispatch] = useReducer(sensorReducer, undefined, createInitialState);
 
-  useEffect(() => {
-    if (!state.isRunning) return undefined;
-
-    const intervalId = window.setInterval(
-      () => dispatch({ type: "tick" }),
-      TICK_INTERVAL_MS,
-    );
-
-    return () => window.clearInterval(intervalId);
-  }, [state.isRunning]);
+  const actions = useMemo(() => ({
+    start: () => dispatch({ type: "start" }),
+    pause: () => dispatch({ type: "pause" }),
+    reset: () => dispatch({ type: "reset" }),
+    setMode: (mode: UpdateMode) => dispatch({ type: "set-mode", mode }),
+    tick: () => dispatch({ type: "tick" }),
+  }) satisfies SensorActions, []);
 
   return (
     <SensorStateContext.Provider value={state}>
-      <SensorDispatchContext.Provider value={dispatch}>
+      <SensorActionsContext.Provider value={actions}>
         {children}
-      </SensorDispatchContext.Provider>
+      </SensorActionsContext.Provider>
     </SensorStateContext.Provider>
   );
 }
 
-export function useSensorState(): SensorState {
+function useSensorStateContext(): SensorState {
   const state = useContext(SensorStateContext);
   if (!state) {
-    throw new Error("useSensorState deve ser usado dentro de SensorProvider.");
+    throw new Error("Hooks de estado devem ser usados dentro de SensorProvider.");
   }
 
   return state;
 }
 
-export function useSensorDispatch(): Dispatch<SensorAction> {
-  const dispatch = useContext(SensorDispatchContext);
-  if (!dispatch) {
-    throw new Error("useSensorDispatch deve ser usado dentro de SensorProvider.");
+export function useSensor(id: number): Sensor {
+  const sensor = useSensorStateContext().sensors.find((item) => item.id === id);
+  if (!sensor) {
+    throw new Error(`Sensor ${id} não encontrado.`);
   }
 
-  return dispatch;
+  return sensor;
+}
+
+export function useSimulationMode(): UpdateMode {
+  return useSensorStateContext().mode;
+}
+
+export function useIsRunning(): boolean {
+  return useSensorStateContext().isRunning;
+}
+
+export function useSensorActions(): SensorActions {
+  const actions = useContext(SensorActionsContext);
+  if (!actions) {
+    throw new Error("useSensorActions deve ser usado dentro de SensorProvider.");
+  }
+
+  return actions;
 }

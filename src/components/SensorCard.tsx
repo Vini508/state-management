@@ -1,11 +1,13 @@
 import { memo } from "react";
-import type { Sensor } from "../domain/sensors";
+import { useSensor } from "../state";
 
 interface SensorCardProps {
-  sensor: Sensor;
+  id: number;
 }
 
-export const SensorCard = memo(function SensorCard({ sensor }: Readonly<SensorCardProps>) {
+export const SensorCard = memo(function SensorCard({ id }: Readonly<SensorCardProps>) {
+  const sensor = useSensor(id);
+
   return (
     <article className="sensor-card">
       <h3>{sensor.name}</h3>

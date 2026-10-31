@@ -1,10 +1,11 @@
-import { SENSOR_COUNT } from "../domain/sensors";
-import { useSensorDispatch, useSensorState } from "../state/SensorContext";
+import { SENSOR_COUNT, SENSOR_IDS } from "../domain/sensors";
+import { useIsRunning, useSensorActions, useSimulationMode } from "../state";
 import { SensorCard } from "./SensorCard";
 
 export function Dashboard() {
-  const state = useSensorState();
-  const dispatch = useSensorDispatch();
+  const mode = useSimulationMode();
+  const isRunning = useIsRunning();
+  const { start, pause, reset, setMode } = useSensorActions();
 
   return (
     <main className="dashboard">
@@ -22,11 +23,11 @@ export function Dashboard() {
           <label className="mode-picker">
             <span>Cenário</span>
             <select
-              value={state.mode}
+              value={mode}
               onChange={(event) => {
-                const mode = event.currentTarget.value;
-                if (mode === "simultaneous" || mode === "localized") {
-                  dispatch({ type: "set-mode", mode });
+                const { value } = event.currentTarget;
+                if (value === "simultaneous" || value === "localized") {
+                  setMode(value);
                 }
               }}
             >
@@ -34,30 +35,30 @@ export function Dashboard() {
               <option value="localized">Um por vez</option>
             </select>
           </label>
-          <span className={`run-state ${state.isRunning ? "run-state--active" : ""}`}>
+          <span className={`run-state ${isRunning ? "run-state--active" : ""}`}>
             <span className="run-state__dot" aria-hidden="true" />
-            {state.isRunning ? "Em execução" : "Pausada"}
+            {isRunning ? "Em execução" : "Pausada"}
           </span>
           <button
             className="button button--primary"
             type="button"
-            onClick={() => dispatch({ type: "start" })}
-            disabled={state.isRunning}
+            onClick={start}
+            disabled={isRunning}
           >
             Iniciar
           </button>
           <button
             className="button button--secondary"
             type="button"
-            onClick={() => dispatch({ type: "pause" })}
-            disabled={!state.isRunning}
+            onClick={pause}
+            disabled={!isRunning}
           >
             Pausar
           </button>
           <button
             className="button button--quiet"
             type="button"
-            onClick={() => dispatch({ type: "reset" })}
+            onClick={reset}
           >
             Reiniciar
           </button>
@@ -69,7 +70,7 @@ export function Dashboard() {
           <div>
             <h2>Sensores</h2>
             <p>
-              {state.mode === "simultaneous"
+              {mode === "simultaneous"
                 ? "20 sensores a cada 500 ms"
                 : "Um sensor por tick, em ordem circular · 500 ms"}
             </p>
@@ -78,8 +79,8 @@ export function Dashboard() {
         </div>
 
         <div className="sensor-grid">
-          {state.sensors.map((sensor) => (
-            <SensorCard key={sensor.id} sensor={sensor} />
+          {SENSOR_IDS.map((id) => (
+            <SensorCard key={id} id={id} />
           ))}
         </div>
       </section>
