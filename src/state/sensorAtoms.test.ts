@@ -58,7 +58,7 @@ describe("atomos da simulacao", () => {
     expect(sensors(otherStore)).toEqual(createInitialSensors());
   });
 
-  it("atualiza os 20 sensores por tick no modo simultaneo", () => {
+  it("atualiza todos os sensores por tick no modo simultaneo", () => {
     const initialSensors = sensors();
     store.set(startAtom);
     store.set(tickAtom);

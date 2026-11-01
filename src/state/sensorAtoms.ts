@@ -3,15 +3,14 @@ import { atomWithReset, RESET } from "jotai/utils";
 import {
   createInitialSensors,
   INITIAL_SEED,
+  sensorIndex,
   updateAllSensors,
   updateOneSensor,
   type UpdateMode,
 } from "../domain/sensors";
 
 // Um átomo por sensor: cada card assina apenas o átomo do próprio sensor.
-const sensorAtoms = new Map(
-  createInitialSensors().map((sensor) => [sensor.id, atomWithReset(sensor)] as const),
-);
+const sensorAtoms = createInitialSensors().map((sensor) => atomWithReset(sensor));
 
 export const isRunningAtom = atomWithReset(false);
 export const modeAtom = atomWithReset<UpdateMode>("simultaneous");
@@ -19,7 +18,7 @@ export const nextSensorIndexAtom = atomWithReset(0);
 const seedAtom = atomWithReset(INITIAL_SEED);
 
 export function getSensorAtom(id: number) {
-  const sensorAtom = sensorAtoms.get(id);
+  const sensorAtom = sensorAtoms[sensorIndex(id)];
   if (!sensorAtom) {
     throw new Error(`Sensor ${id} não encontrado.`);
   }
@@ -49,16 +48,22 @@ export const setModeAtom = atom(null, (get, set, mode: UpdateMode) => {
 export const tickAtom = atom(null, (get, set) => {
   if (!get(isRunningAtom)) return;
 
-  const mode = get(modeAtom);
-  const sensors = [...sensorAtoms.values()].map((sensorAtom) => get(sensorAtom));
-  const updated = mode === "simultaneous"
-    ? updateAllSensors(sensors, get(seedAtom))
-    : updateOneSensor(sensors, get(nextSensorIndexAtom), get(seedAtom));
+  if (get(modeAtom) === "localized") {
+    // Só o átomo do sensor da vez é lido e gravado; os demais nem são tocados.
+    const index = get(nextSensorIndexAtom);
+    const sensorAtom = sensorAtoms[index];
+    const updated = updateOneSensor([get(sensorAtom)], 0, get(seedAtom));
 
-  // Gravar o mesmo objeto não notifica: só os átomos alterados avisam seus cards.
-  updated.sensors.forEach((sensor) => set(getSensorAtom(sensor.id), sensor));
-  set(seedAtom, updated.seed);
-  if (mode === "localized") {
-    set(nextSensorIndexAtom, (index) => (index + 1) % sensors.length);
+    set(sensorAtom, updated.sensors[0]);
+    set(seedAtom, updated.seed);
+    set(nextSensorIndexAtom, (index + 1) % sensorAtoms.length);
+    return;
   }
+
+  const updated = updateAllSensors(
+    sensorAtoms.map((sensorAtom) => get(sensorAtom)),
+    get(seedAtom),
+  );
+  updated.sensors.forEach((sensor, index) => set(sensorAtoms[index], sensor));
+  set(seedAtom, updated.seed);
 });
