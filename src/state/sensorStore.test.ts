@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { SENSOR_COUNT } from "../domain/sensors";
 import { useSensorStore } from "./sensorStore";
 
 const { getState, subscribe } = useSensorStore;
@@ -15,7 +16,7 @@ describe("store da simulacao", () => {
     }
 
     const { sensors } = getState();
-    expect(sensors).toHaveLength(20);
+    expect(sensors).toHaveLength(SENSOR_COUNT);
     expect(sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
   });
 
@@ -39,13 +40,13 @@ describe("store da simulacao", () => {
     expect(getState().actions).toBe(actions);
   });
 
-  it("atualiza os 20 sensores por tick no modo simultaneo", () => {
+  it("atualiza todos os sensores por tick no modo simultaneo", () => {
     const initialSensors = getState().sensors;
     actions.start();
     actions.tick();
 
     const { sensors } = getState();
-    expect(sensors).toHaveLength(20);
+    expect(sensors).toHaveLength(SENSOR_COUNT);
     expect(sensors.every((sensor, index) => sensor !== initialSensors[index])).toBe(true);
   });
 

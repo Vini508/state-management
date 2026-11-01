@@ -4,6 +4,7 @@ import type { SensorActions } from "../domain/contract";
 import {
   createInitialSensors,
   INITIAL_SEED,
+  sensorIndex,
   updateAllSensors,
   updateOneSensor,
   type Sensor,
@@ -62,7 +63,7 @@ export function SensorProvider({ children }: Readonly<PropsWithChildren>) {
 }
 
 export function useSensor(id: number): Sensor {
-  const sensor = useSensorStore((state) => state.sensors.find((item) => item.id === id));
+  const sensor = useSensorStore((state) => state.sensors[sensorIndex(id)]);
   if (!sensor) {
     throw new Error(`Sensor ${id} não encontrado.`);
   }
