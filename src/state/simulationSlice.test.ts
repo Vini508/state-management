@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SENSOR_COUNT } from "../domain/sensors";
 import {
   createInitialState,
   pause,
@@ -20,7 +21,7 @@ describe("slice da simulacao", () => {
       state = reducer(state, tick());
     }
 
-    expect(state.sensors).toHaveLength(20);
+    expect(state.sensors).toHaveLength(SENSOR_COUNT);
     expect(state.sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
   });
 
@@ -34,11 +35,11 @@ describe("slice da simulacao", () => {
     expect(reducer(running, start())).toBe(running);
   });
 
-  it("atualiza os 20 sensores por tick no modo simultaneo", () => {
+  it("atualiza todos os sensores por tick no modo simultaneo", () => {
     const initial = createInitialState();
     const afterTick = reducer(reducer(initial, start()), tick());
 
-    expect(afterTick.sensors).toHaveLength(20);
+    expect(afterTick.sensors).toHaveLength(SENSOR_COUNT);
     expect(afterTick.sensors.every((sensor, index) => sensor !== initial.sensors[index])).toBe(true);
   });
 

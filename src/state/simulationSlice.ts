@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   createInitialSensors,
   INITIAL_SEED,
+  sensorIndex,
   updateAllSensors,
   updateOneSensor,
   type Sensor,
@@ -56,8 +57,7 @@ export const simulationSlice = createSlice({
     },
   },
   selectors: {
-    selectSensorById: (state, id: number) =>
-      state.sensors.find((sensor) => sensor.id === id),
+    selectSensorById: (state, id: number) => state.sensors[sensorIndex(id)],
     selectMode: (state) => state.mode,
     selectIsRunning: (state) => state.isRunning,
   },
