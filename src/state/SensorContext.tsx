@@ -6,7 +6,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import type { SensorActions } from "../domain/contract";
-import type { Sensor, UpdateMode } from "../domain/sensors";
+import { sensorIndex, type Sensor, type UpdateMode } from "../domain/sensors";
 import {
   createInitialState,
   sensorReducer,
@@ -46,7 +46,7 @@ function useSensorStateContext(): SensorState {
 }
 
 export function useSensor(id: number): Sensor {
-  const sensor = useSensorStateContext().sensors.find((item) => item.id === id);
+  const sensor = useSensorStateContext().sensors[sensorIndex(id)];
   if (!sensor) {
     throw new Error(`Sensor ${id} não encontrado.`);
   }

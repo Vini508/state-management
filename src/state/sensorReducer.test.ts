@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SENSOR_COUNT } from "../domain/sensors";
 import { createInitialState, sensorReducer } from "./sensorReducer";
 
 describe("reducer dos sensores", () => {
@@ -10,17 +11,17 @@ describe("reducer dos sensores", () => {
       state = sensorReducer(state, { type: "tick" });
     }
 
-    expect(state.sensors).toHaveLength(20);
+    expect(state.sensors).toHaveLength(SENSOR_COUNT);
     expect(state.sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
   });
 
-  it("atualiza os 20 sensores por tick e ignora ticks quando pausada", () => {
+  it("atualiza todos os sensores por tick e ignora ticks quando pausada", () => {
     const initial = createInitialState();
     expect(sensorReducer(initial, { type: "tick" })).toBe(initial);
 
     const running = sensorReducer(initial, { type: "start" });
     const afterTick = sensorReducer(running, { type: "tick" });
-    expect(afterTick.sensors).toHaveLength(20);
+    expect(afterTick.sensors).toHaveLength(SENSOR_COUNT);
     expect(afterTick.sensors.every((sensor, index) => sensor !== initial.sensors[index])).toBe(true);
   });
 

@@ -79,7 +79,7 @@ describe("contrato de estado", () => {
     expect(result.current.actions).toBe(actions);
   });
 
-  it("atualiza os 20 sensores por tick, pausa e reinicia", () => {
+  it("atualiza todos os sensores por tick, pausa e reinicia", () => {
     const { result } = renderContract();
 
     act(() => result.current.actions.start());
@@ -111,20 +111,31 @@ describe("contrato de estado", () => {
 
     act(() => result.current.actions.start());
 
-    const ticks = SENSOR_IDS.length + 1;
-    for (let tick = 0; tick < ticks; tick += 1) {
+    const count = SENSOR_IDS.length;
+    const tickAndListChanged = () => {
       const previous = result.current.sensors;
       act(() => result.current.actions.tick());
 
-      const changedIndexes = result.current.sensors.flatMap((sensor, index) =>
+      return result.current.sensors.flatMap((sensor, index) =>
         sensor === previous[index] ? [] : [index],
       );
-      expect(changedIndexes).toEqual([tick % SENSOR_IDS.length]);
-    }
+    };
+
+    expect(tickAndListChanged()).toEqual([0]);
+    expect(tickAndListChanged()).toEqual([1]);
+    // Os ticks do meio rodam num único act para o teste não renderizar mil vezes;
+    // a comparação final com a sequência esperada confere todos eles.
+    act(() => {
+      for (let tick = 2; tick < count - 1; tick += 1) {
+        result.current.actions.tick();
+      }
+    });
+    expect(tickAndListChanged()).toEqual([count - 1]);
+    expect(tickAndListChanged()).toEqual([0]);
 
     expect(result.current.sensors).toEqual(
-      expectedAfterTicks(ticks, (sensors, seed, tick) =>
-        updateOneSensor(sensors, tick % SENSOR_IDS.length, seed),
+      expectedAfterTicks(count + 1, (sensors, seed, tick) =>
+        updateOneSensor(sensors, tick % count, seed),
       ),
     );
   });
