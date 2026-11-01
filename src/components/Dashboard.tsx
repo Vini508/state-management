@@ -1,4 +1,4 @@
-import { SENSOR_COUNT, SENSOR_IDS } from "../domain/sensors";
+import { SENSOR_COUNT, SENSOR_IDS, TICK_INTERVAL_MS } from "../domain/sensors";
 import { useIsRunning, useSensorActions, useSimulationMode } from "../state";
 import { SensorCard } from "./SensorCard";
 
@@ -11,17 +11,18 @@ export function Dashboard() {
     <main className="dashboard">
       <header className="page-header">
         <div>
-          <p className="eyebrow">SIMULADOR LOCAL</p>
-          <h1>Central de sensores</h1>
+          <h1>Painel de sensores</h1>
           <p className="page-header__description">
-            Visão geral dos servidores monitorados.
+            {mode === "simultaneous"
+              ? `Os ${SENSOR_COUNT.toLocaleString("pt-BR")} sensores são atualizados a cada ${TICK_INTERVAL_MS} ms.`
+              : `Um sensor é atualizado a cada ${TICK_INTERVAL_MS} ms, em ordem circular.`}
           </p>
         </div>
 
         <fieldset className="controls">
           <legend className="visually-hidden">Controles da simulação</legend>
           <label className="mode-picker">
-            <span>Cenário</span>
+            <span>Atualização</span>
             <select
               value={mode}
               onChange={(event) => {
@@ -31,8 +32,8 @@ export function Dashboard() {
                 }
               }}
             >
-              <option value="simultaneous">20 sensores</option>
-              <option value="localized">Um por vez</option>
+              <option value="simultaneous">Simultânea</option>
+              <option value="localized">Localizada</option>
             </select>
           </label>
           <span className={`run-state ${isRunning ? "run-state--active" : ""}`}>
@@ -65,24 +66,10 @@ export function Dashboard() {
         </fieldset>
       </header>
 
-      <section className="sensor-section" aria-label="Sensores">
-        <div className="section-heading">
-          <div>
-            <h2>Sensores</h2>
-            <p>
-              {mode === "simultaneous"
-                ? "20 sensores a cada 500 ms"
-                : "Um sensor por tick, em ordem circular · 500 ms"}
-            </p>
-          </div>
-          <span className="sensor-count">{SENSOR_COUNT} unidades</span>
-        </div>
-
-        <div className="sensor-grid">
-          {SENSOR_IDS.map((id) => (
-            <SensorCard key={id} id={id} />
-          ))}
-        </div>
+      <section className="sensor-grid" aria-label="Sensores">
+        {SENSOR_IDS.map((id) => (
+          <SensorCard key={id} id={id} />
+        ))}
       </section>
     </main>
   );
