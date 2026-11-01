@@ -9,11 +9,8 @@ export const SensorCard = memo(function SensorCard({ id }: Readonly<SensorCardPr
   const sensor = useSensor(id);
 
   return (
-    <article className="sensor-card">
-      <h3>{sensor.name}</h3>
-      <p>
-        {sensor.value}<span>%</span>
-      </p>
-    </article>
+    <div className="sensor-card" title={sensor.name}>
+      {sensor.value}
+    </div>
   );
 });

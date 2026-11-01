@@ -4,16 +4,24 @@ import {
   INITIAL_SEED,
   SENSOR_COUNT,
   SENSOR_IDS,
+  sensorIndex,
   updateAllSensors,
   updateOneSensor,
 } from "./sensors";
 
 describe("simulacao dos sensores", () => {
-  it("cria 20 sensores com os mesmos IDs de SENSOR_IDS", () => {
+  it("cria SENSOR_COUNT sensores com os IDs de SENSOR_IDS e valores entre 0 e 100", () => {
     const sensors = createInitialSensors();
 
     expect(sensors).toHaveLength(SENSOR_COUNT);
     expect(sensors.map((sensor) => sensor.id)).toEqual(SENSOR_IDS);
+    expect(sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
+  });
+
+  it("encontra cada sensor pela posicao calculada a partir do ID", () => {
+    const sensors = createInitialSensors();
+
+    expect(SENSOR_IDS.every((id) => sensors[sensorIndex(id)]?.id === id)).toBe(true);
   });
 
   it("mantem os valores entre 0 e 100", () => {
