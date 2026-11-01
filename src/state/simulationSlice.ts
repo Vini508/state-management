@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, original, type PayloadAction } from "@reduxjs/toolkit";
 import {
   createInitialSensors,
   INITIAL_SEED,
@@ -45,14 +45,17 @@ export const simulationSlice = createSlice({
     tick(state) {
       if (!state.isRunning) return;
 
+      // Ler a lista pelo rascunho do Immer criaria um proxy por sensor;
+      // o domínio recebe a lista original, como recomenda a documentação do Immer.
+      const sensors = original(state.sensors) ?? state.sensors;
       const updated = state.mode === "simultaneous"
-        ? updateAllSensors(state.sensors, state.seed)
-        : updateOneSensor(state.sensors, state.nextSensorIndex, state.seed);
+        ? updateAllSensors(sensors, state.seed)
+        : updateOneSensor(sensors, state.nextSensorIndex, state.seed);
 
       state.sensors = updated.sensors;
       state.seed = updated.seed;
       if (state.mode === "localized") {
-        state.nextSensorIndex = (state.nextSensorIndex + 1) % state.sensors.length;
+        state.nextSensorIndex = (state.nextSensorIndex + 1) % sensors.length;
       }
     },
   },
