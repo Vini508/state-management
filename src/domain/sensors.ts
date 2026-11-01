@@ -6,31 +6,49 @@ export interface Sensor {
   value: number;
 }
 
-export const SENSOR_COUNT = 20;
-export const TICK_INTERVAL_MS = 500;
+export const SENSOR_COUNT = 1000;
+export const TICK_INTERVAL_MS = 15;
 export const INITIAL_SEED = 0x12345678;
+const INITIAL_VALUES_SEED = 0x9e3779b9;
 
-const INITIAL_VALUES = [
-  27, 42, 62, 68, 73, 83, 91, 52, 34, 69,
-  70, 15, 96, 47, 58, 80, 22, 88, 65, 38,
-];
+// Valores iniciais entre 0 e 100, gerados pela mesma sequência em toda execução.
+const INITIAL_VALUES = createInitialValues();
 
 export const SENSOR_IDS: readonly number[] = INITIAL_VALUES.map((_, index) => index + 1);
+
+// Os IDs são sequenciais a partir de 1, então a posição na lista é direta.
+export function sensorIndex(id: number): number {
+  return id - 1;
+}
 
 export function createInitialSensors(): Sensor[] {
   return INITIAL_VALUES.map((value, index) => ({
     id: index + 1,
-    name: `Servidor ${String(index + 1).padStart(2, "0")}`,
+    name: `Sensor ${String(index + 1).padStart(4, "0")}`,
     value,
   }));
 }
 
-function nextRandom(seed: number): { seed: number; delta: number } {
+function createInitialValues(): number[] {
+  let seed = INITIAL_VALUES_SEED;
+
+  return Array.from({ length: SENSOR_COUNT }, () => {
+    seed = xorshift(seed);
+    return seed % 101;
+  });
+}
+
+function xorshift(seed: number): number {
   let nextSeed = seed >>> 0;
   nextSeed ^= nextSeed << 13;
   nextSeed ^= nextSeed >>> 17;
   nextSeed ^= nextSeed << 5;
-  nextSeed >>>= 0;
+
+  return nextSeed >>> 0;
+}
+
+function nextRandom(seed: number): { seed: number; delta: number } {
+  const nextSeed = xorshift(seed);
 
   return { seed: nextSeed, delta: (nextSeed % 11) - 5 };
 }
