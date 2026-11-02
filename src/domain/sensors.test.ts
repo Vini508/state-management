@@ -18,6 +18,14 @@ describe("simulacao dos sensores", () => {
     expect(sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
   });
 
+  it("devolve uma lista nova com os mesmos objetos iniciais a cada chamada", () => {
+    const first = createInitialSensors();
+    const second = createInitialSensors();
+
+    expect(second).not.toBe(first);
+    expect(second.every((sensor, index) => sensor === first[index])).toBe(true);
+  });
+
   it("encontra cada sensor pela posicao calculada a partir do ID", () => {
     const sensors = createInitialSensors();
 

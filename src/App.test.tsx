@@ -3,11 +3,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { SENSOR_COUNT, TICK_INTERVAL_MS } from "./domain/sensors";
 
+// Redux e Zustand guardam o estado num store global, que sobrevive entre testes.
+function renderApp() {
+  const view = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Reiniciar" }));
+  return view;
+}
+
 describe("dashboard de sensores", () => {
   afterEach(() => vi.useRealTimers());
 
   it("mostra todos os sensores e os controles, iniciando pausado", () => {
-    const { container } = render(<App />);
+    const { container } = renderApp();
 
     expect(screen.getByRole("heading", { name: "Painel de sensores" })).toBeTruthy();
     expect(container.querySelectorAll(".sensor-card")).toHaveLength(SENSOR_COUNT);
@@ -19,7 +26,7 @@ describe("dashboard de sensores", () => {
 
   it("inicia, pausa e reinicia a atualizacao simultanea", () => {
     vi.useFakeTimers();
-    const { container } = render(<App />);
+    const { container } = renderApp();
     const values = () =>
       Array.from(container.querySelectorAll(".sensor-card"))
         .map((element) => element.textContent);

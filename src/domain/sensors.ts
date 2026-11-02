@@ -21,12 +21,18 @@ export function sensorIndex(id: number): number {
   return id - 1;
 }
 
-export function createInitialSensors(): Sensor[] {
-  return INITIAL_VALUES.map((value, index) => ({
+// Criados uma vez só: reiniciar devolve as mesmas referências, então nenhuma
+// versão redesenha um sensor que não mudou.
+const INITIAL_SENSORS: readonly Sensor[] = INITIAL_VALUES.map((value, index) =>
+  Object.freeze({
     id: index + 1,
     name: `Sensor ${String(index + 1).padStart(4, "0")}`,
     value,
-  }));
+  }),
+);
+
+export function createInitialSensors(): Sensor[] {
+  return [...INITIAL_SENSORS];
 }
 
 function createInitialValues(): number[] {
