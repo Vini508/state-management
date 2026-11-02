@@ -26,11 +26,15 @@ describe("store da simulacao", () => {
     const unsubscribe = subscribe(listener);
 
     actions.tick();
+    actions.pause();
     actions.setMode("simultaneous");
-    unsubscribe();
-
     expect(listener).not.toHaveBeenCalled();
     expect(getState()).toBe(initial);
+
+    actions.start();
+    actions.start();
+    unsubscribe();
+    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it("preserva o objeto de acoes ao reiniciar e trocar de modo", () => {

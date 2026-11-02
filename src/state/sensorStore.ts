@@ -37,8 +37,9 @@ function createInitialState(): SensorState {
 export const useSensorStore = create<SensorStore>()((set) => ({
   ...createInitialState(),
   actions: {
-    start: () => set({ isRunning: true }),
-    pause: () => set({ isRunning: false }),
+    // Devolver o próprio estado faz o Zustand não avisar ninguém.
+    start: () => set((state) => (state.isRunning ? state : { isRunning: true })),
+    pause: () => set((state) => (state.isRunning ? { isRunning: false } : state)),
     reset: () => set(createInitialState()),
     setMode: (mode) =>
       set((state) => (state.mode === mode ? state : { ...createInitialState(), mode })),
