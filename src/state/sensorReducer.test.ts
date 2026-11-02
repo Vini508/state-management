@@ -15,17 +15,26 @@ describe("reducer dos sensores", () => {
     expect(state.sensors.every((sensor) => sensor.value >= 0 && sensor.value <= 100)).toBe(true);
   });
 
-  it("atualiza todos os sensores por tick e ignora ticks quando pausada", () => {
+  it("devolve o mesmo estado quando a acao nao muda nada", () => {
     const initial = createInitialState();
     expect(sensorReducer(initial, { type: "tick" })).toBe(initial);
+    expect(sensorReducer(initial, { type: "pause" })).toBe(initial);
+    expect(sensorReducer(initial, { type: "set-mode", mode: "simultaneous" })).toBe(initial);
 
     const running = sensorReducer(initial, { type: "start" });
+    expect(sensorReducer(running, { type: "start" })).toBe(running);
+  });
+
+  it("atualiza todos os sensores por tick no modo simultaneo", () => {
+    const initial = createInitialState();
+    const running = sensorReducer(initial, { type: "start" });
     const afterTick = sensorReducer(running, { type: "tick" });
+
     expect(afterTick.sensors).toHaveLength(SENSOR_COUNT);
     expect(afterTick.sensors.every((sensor, index) => sensor !== initial.sensors[index])).toBe(true);
   });
 
-  it("atualiza um sensor por tick e percorre a lista em ordem circular", () => {
+  it("atualiza um sensor por tick e preserva a referencia dos demais", () => {
     let state = createInitialState();
     state = sensorReducer(state, { type: "start" });
     state = sensorReducer(state, { type: "tick" });

@@ -31,7 +31,7 @@ function useContract() {
 
 function renderContract() {
   const view = renderHook(useContract, { wrapper: SensorProvider });
-  // Stores globais (Zustand, Jotai sem provider) sobrevivem entre testes.
+  // Redux e Zustand guardam o estado num store global, que sobrevive entre testes.
   act(() => view.result.current.actions.reset());
   return view;
 }
