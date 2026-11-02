@@ -32,7 +32,7 @@ const violations = [...changed].filter(
 if (violations.length > 0) {
   console.error(`"${branch}" altera arquivos fora da camada de estado em relação a "${BASE}":`);
   for (const file of violations) console.error(`  - ${file}`);
-  console.error("Mova essas mudanças para o branch base e faça rebase.");
+  console.error("Mova essas mudanças para o branch base e faça merge dele neste branch.");
   process.exit(1);
 }
 
