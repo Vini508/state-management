@@ -15,7 +15,7 @@
 * { box-sizing: border-box; }
 body { min-width: 320px; min-height: 100vh; margin: 0; }
 button, select { font: inherit; }
-h1, h2, h3, p { margin-top: 0; }
+h1, p { margin-top: 0; }
 
 .dashboard {
   display: flex;
