@@ -47,7 +47,7 @@ export const simulationSlice = createSlice({
 
       // Ler a lista pelo rascunho do Immer criaria um proxy por sensor;
       // o domínio recebe a lista original, como recomenda a documentação do Immer.
-      const sensors = original(state.sensors) ?? state.sensors;
+      const sensors = original(state.sensors);
       const updated = state.mode === "simultaneous"
         ? updateAllSensors(sensors, state.seed)
         : updateOneSensor(sensors, state.nextSensorIndex, state.seed);
