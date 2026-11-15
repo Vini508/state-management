@@ -1,13 +1,16 @@
-import { bindActionCreators } from "@reduxjs/toolkit";
 import { useMemo, type PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import type { SensorActions } from "../domain/contract";
 import type { Sensor, UpdateMode } from "../domain/sensors";
 import {
+  pause,
+  reset,
   selectIsRunning,
   selectMode,
   selectSensorById,
-  simulationSlice,
+  setMode,
+  start,
+  tick,
 } from "./simulationSlice";
 import { store, useAppDispatch, useAppSelector } from "./store";
 
@@ -36,7 +39,14 @@ export function useSensorActions(): SensorActions {
   const dispatch = useAppDispatch();
 
   return useMemo(
-    () => bindActionCreators(simulationSlice.actions, dispatch) satisfies SensorActions,
+    () =>
+      ({
+        start: () => dispatch(start()),
+        pause: () => dispatch(pause()),
+        reset: () => dispatch(reset()),
+        setMode: (mode) => dispatch(setMode(mode)),
+        tick: () => dispatch(tick()),
+      }) satisfies SensorActions,
     [dispatch],
   );
 }
