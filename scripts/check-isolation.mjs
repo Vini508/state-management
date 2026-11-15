@@ -1,5 +1,3 @@
-// Garante que um branch de técnica altera apenas a camada de estado em
-// relação ao branch base. Uso: npm run check:isolation [-- <branch-base>]
 import { execFileSync } from "node:child_process";
 
 const BASE = process.argv[2] ?? "main";
