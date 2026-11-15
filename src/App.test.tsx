@@ -35,13 +35,17 @@ describe("dashboard de sensores", () => {
     fireEvent.click(screen.getByRole("button", { name: "Iniciar" }));
     expect(container.querySelector(".run-state--active")).toBeTruthy();
 
-    act(() => vi.advanceTimersByTime(TICK_INTERVAL_MS));
+    act(() => {
+      vi.advanceTimersByTime(TICK_INTERVAL_MS);
+    });
     expect(values()).not.toEqual(initialValues);
 
     fireEvent.click(screen.getByRole("button", { name: "Pausar" }));
     expect(container.querySelector(".run-state--active")).toBeNull();
     const pausedValues = values();
-    act(() => vi.advanceTimersByTime(TICK_INTERVAL_MS * 2));
+    act(() => {
+      vi.advanceTimersByTime(TICK_INTERVAL_MS * 2);
+    });
     expect(values()).toEqual(pausedValues);
 
     fireEvent.click(screen.getByRole("button", { name: "Reiniciar" }));
