@@ -9,14 +9,18 @@ export default defineConfig(({ mode }) => ({
     mode === "profiling"
       ? { alias: { "react-dom/client": "react-dom/profiling" } }
       : {},
-  preview: {
-    // Isolamento de origem: dá ao performance.now a precisão de 0,005 ms,
-    // em vez de 0,1 ms.
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
-  },
+  // "vite preview --mode profiling" serve com isolamento de origem, que dá ao
+  // performance.now a precisão de 0,005 ms, em vez de 0,1 ms. Fica restrito a
+  // esse modo porque os cabeçalhos atrapalham o Lighthouse.
+  preview:
+    mode === "profiling"
+      ? {
+          headers: {
+            "Cross-Origin-Opener-Policy": "same-origin",
+            "Cross-Origin-Embedder-Policy": "require-corp",
+          },
+        }
+      : {},
   test: {
     environment: "jsdom",
     setupFiles: ["./src/testSetup.ts"],
