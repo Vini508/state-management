@@ -7,7 +7,7 @@ import {
   sensorIndex,
   updateAllSensors,
   updateOneSensor,
-} from "./sensors";
+} from "../domain/sensors";
 
 describe("simulacao dos sensores", () => {
   it("cria SENSOR_COUNT sensores com os IDs de SENSOR_IDS e valores entre 0 e 100", () => {

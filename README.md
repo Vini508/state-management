@@ -48,17 +48,24 @@ Repita o `npm ci` ao trocar de branch, porque cada versão tem a própria biblio
 
 ```
 src/
-  components/   Dashboard, SensorCard e SimulationClock (iguais em todas as branches)
-  domain/       Simulação dos sensores e contrato da camada de estado (iguais em todas)
-  state/        Camada de estado (a única pasta que muda entre as branches)
+  main.tsx, App.tsx    Ponto de entrada e raiz da aplicação
+  measurement.ts       Instrumentação de medição (desligada no uso normal)
+  components/          Dashboard, SensorCard e SimulationClock
+  domain/              Simulação dos sensores e contrato da camada de estado
+  tests/               Testes compartilhados por todas as versões
+  state/               Camada de estado: a única pasta que muda entre as branches,
+                       incluindo os testes específicos de cada biblioteca
+measure/               Coletor das medições (ver measure/README.md)
 ```
+
+Tudo fora de `src/state/` é igual nas quatro branches.
 
 Os componentes acessam o estado apenas pelos hooks exportados por `src/state/index.ts`: `useSensor`, `useSimulationMode`, `useIsRunning` e `useSensorActions`, além do componente `SensorProvider`. Cada branch implementa esse mesmo contrato com a respectiva técnica.
 
 ## Como a equivalência é garantida
 
 - **Isolamento:** `npm run check:isolation` falha se uma branch alterar qualquer arquivo fora de `src/state/`, `package.json` e `package-lock.json`.
-- **Contrato:** `src/state.contract.test.tsx` é compartilhado e verifica que todas as versões produzem a mesma sequência de valores nos dois cenários.
-- **Renderizações:** `src/state.renders.test.tsx` é compartilhado e conta quantas vezes cada componente renderiza em uma atualização. Os valores esperados de cada versão ficam em `src/state/renderExpectations.ts`.
+- **Contrato:** `src/tests/contract.test.tsx` é compartilhado e verifica que todas as versões produzem a mesma sequência de valores nos dois cenários.
+- **Renderizações:** `src/tests/renders.test.tsx` é compartilhado e conta quantas vezes cada componente renderiza em uma atualização. Os valores esperados de cada versão ficam em `src/state/renderExpectations.ts`.
 
 Mudanças em código compartilhado são feitas no `main` e levadas às demais branches por merge.

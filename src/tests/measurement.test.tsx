@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { TICK_INTERVAL_MS } from "./domain/sensors";
-import { createMeasurement } from "./measurement";
+import { TICK_INTERVAL_MS } from "../domain/sensors";
+import { createMeasurement } from "../measurement";
 
 // Este arquivo é compartilhado entre todos os branches e não pode ser alterado neles.
 
@@ -60,7 +60,7 @@ describe("medicao ativada pelo endereco", () => {
   async function renderAppAt(url: string) {
     window.history.replaceState({}, "", url);
     vi.resetModules();
-    const { default: App } = await import("./App");
+    const { default: App } = await import("../App");
     vi.useFakeTimers();
     render(<App />);
     // Redux e Zustand guardam o estado num store global, que sobrevive entre testes.

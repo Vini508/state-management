@@ -16,9 +16,9 @@ import {
   WORK_DIR,
   profilingOutDir,
   workDir,
-} from "./config.mjs";
-import { measureBundle, measureCode } from "./lib/code.mjs";
-import { run, setCurrentResultsDir, timestamp, writeCsv } from "./lib/util.mjs";
+} from "../config.mjs";
+import { measureBundle, measureCode } from "../medicoes/codigo.mjs";
+import { run, setCurrentResultsDir, timestamp, writeCsv } from "../apoio/util.mjs";
 
 // O tar do Windows entende caminhos com letra de unidade; o do Git Bash, não.
 const TAR = path.join(process.env.SystemRoot ?? "C:\\Windows", "System32", "tar.exe");

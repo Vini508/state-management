@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import App from "./App";
-import { SENSOR_COUNT, TICK_INTERVAL_MS } from "./domain/sensors";
+import App from "../App";
+import { SENSOR_COUNT, TICK_INTERVAL_MS } from "../domain/sensors";
 
 // Redux e Zustand guardam o estado num store global, que sobrevive entre testes.
 function renderApp() {
