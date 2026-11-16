@@ -250,6 +250,7 @@ def find_pair(pairs, context, a, b):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")
     results = Path(sys.argv[1]) if len(sys.argv) > 1 else None
     if results is None or not results.exists():
         sys.exit("Informe a pasta de resultados.")
@@ -335,7 +336,11 @@ def main():
              "As regras estão em Docs/plano-medicao.md, seção 11. Os vereditos abaixo aplicam essas regras",
              "aos dados; confira-os antes de levar ao texto.", ""]
 
-    code_file, bundle_file = results / "codigo.csv", results / "pacote.csv"
+    # No ensaio e no teste rápido, esses dois arquivos ficam na pasta acima.
+    def beside(name):
+        return results / name if (results / name).exists() else results.parent / name
+
+    code_file, bundle_file = beside("codigo.csv"), beside("pacote.csv")
     lines += ["## H1: rastreabilidade do Redux ao custo de mais código", ""]
     if code_file.exists():
         code = pd.read_csv(code_file).set_index("implementacao")
