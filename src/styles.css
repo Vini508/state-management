@@ -60,13 +60,16 @@ h1 { margin-bottom: 2px; font-size: clamp(22px, 2.2vw, 30px); font-weight: 700; 
 .button--secondary:not(:disabled):hover, .button--quiet:hover { background: #edf1f4; }
 .button--quiet { color: #55636d; background: transparent; }
 
-/* O Dashboard define --grid-columns e --grid-rows: 40 × 25 com 1.000 sensores. */
-.sensor-grid { display: grid; min-height: 0; flex: 1 1 auto; grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr)); grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr)); gap: 2px; }
-.sensor-card { display: flex; min-width: 0; min-height: 0; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); font-size: clamp(9px, min(.75vw, 1.4vh), 14px); font-variant-numeric: tabular-nums; font-weight: 600; }
+/* O Dashboard define --grid-columns e --grid-rows: 40 × 25 com 1.000 sensores.
+   contain isola o layout: sem ele, trocar o valor de uma célula faz o navegador
+   recalcular o layout da página inteira a cada atualização. */
+.sensor-grid { contain: strict; display: grid; min-height: 0; flex: 1 1 auto; grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr)); grid-template-rows: repeat(var(--grid-rows), minmax(0, 1fr)); gap: 2px; }
+.sensor-card { contain: strict; display: flex; min-width: 0; min-height: 0; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); font-size: clamp(9px, min(.75vw, 1.4vh), 14px); font-variant-numeric: tabular-nums; font-weight: 600; }
 
 @media (max-width: 1000px) {
   .dashboard { height: auto; min-height: 100svh; overflow: visible; }
-  .sensor-grid { flex: 0 0 auto; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); grid-template-rows: none; grid-auto-rows: 24px; }
+  /* Aqui a altura da grade vem do conteúdo, então o tamanho não pode ser isolado. */
+  .sensor-grid { contain: content; flex: 0 0 auto; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); grid-template-rows: none; grid-auto-rows: 24px; }
 }
 
 @media (max-width: 760px) {
@@ -81,5 +84,5 @@ h1 { margin-bottom: 2px; font-size: clamp(22px, 2.2vw, 30px); font-weight: 700; 
 
 @media (max-height: 660px) and (min-width: 1001px) {
   .dashboard { height: auto; min-height: 100svh; overflow: visible; }
-  .sensor-grid { flex: 0 0 auto; grid-template-rows: repeat(var(--grid-rows), 22px); }
+  .sensor-grid { contain: content; flex: 0 0 auto; grid-template-rows: repeat(var(--grid-rows), 22px); }
 }
