@@ -1,18 +1,18 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import App from "./App";
-import type { RendersPerTick } from "./domain/contract";
-import { TICK_INTERVAL_MS, type UpdateMode } from "./domain/sensors";
-import * as state from "./state";
-import { expectedRenders } from "./state/renderExpectations";
+import App from "../App";
+import type { RendersPerTick } from "../domain/contract";
+import { TICK_INTERVAL_MS, type UpdateMode } from "../domain/sensors";
+import * as state from "../state";
+import { expectedRenders } from "../state/renderExpectations";
 
 // Este arquivo é compartilhado entre todos os branches e não pode ser alterado
 // neles: o que muda por branch é só src/state/renderExpectations.ts.
 
 // Cada hook abaixo é chamado uma vez por renderização do componente que o usa,
 // então contar as chamadas é contar as renderizações dos componentes reais.
-vi.mock("./state", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("./state")>();
+vi.mock("../state", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../state")>();
 
   return {
     ...actual,

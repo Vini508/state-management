@@ -2,7 +2,7 @@ import * as chromeLauncher from "chrome-launcher";
 import lighthouse from "lighthouse";
 import desktopConfig from "lighthouse/core/config/desktop-config.js";
 import { CHROME_PATH, RUN_TIMEOUT_MS } from "../config.mjs";
-import { round, withTimeout } from "./util.mjs";
+import { round, withTimeout } from "../apoio/util.mjs";
 
 // Uma rodada do Lighthouse: Chrome e perfil novos, configuração padrão de desktop.
 export async function runLighthouse(url) {

@@ -8,7 +8,7 @@ import {
   WARMUP_TICKS,
   gridColumns,
 } from "../config.mjs";
-import { checksum, mean, percentile, round, withTimeout } from "./util.mjs";
+import { checksum, mean, percentile, round, withTimeout } from "../apoio/util.mjs";
 
 const MB = 1024 * 1024;
 

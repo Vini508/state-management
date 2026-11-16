@@ -1,6 +1,6 @@
 """Análise estatística das medições.
 
-Uso: npm run analyze   (ou: python analyze.py <pasta de resultados>)
+Uso: npm run analyze   (ou: python medicoes/estatistica.py <pasta de resultados>)
 
 Procedimento, igual para toda medida (Docs/plano-medicao.md, seção 8):
   1. estatística descritiva das execuções válidas, sem o bloco de aquecimento;
