@@ -5,12 +5,12 @@
   "type": "module",
   "description": "Coletor de medições do experimento. Tem dependências próprias para não alterar as da aplicação.",
   "scripts": {
-    "setup": "node setup.mjs",
-    "rehearsal": "node collect.mjs --rehearsal",
-    "collect": "node collect.mjs",
-    "verify": "node verify.mjs",
-    "analyze": "node analyze.mjs",
-    "inspect": "node inspect.mjs"
+    "setup": "node etapas/1-preparar.mjs",
+    "rehearsal": "node etapas/2-coletar.mjs --rehearsal",
+    "collect": "node etapas/2-coletar.mjs",
+    "verify": "node etapas/3-conferir.mjs",
+    "analyze": "node etapas/4-analisar.mjs",
+    "inspect": "node etapas/inspecionar.mjs"
   },
   "dependencies": {
     "chrome-launcher": "1.2.3",

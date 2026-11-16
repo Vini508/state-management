@@ -9,7 +9,7 @@ export interface SensorActions {
 }
 
 // Renderizações de cada componente em uma atualização, conferidas em
-// state.renders.test.tsx contra o src/state/renderExpectations.ts de cada branch.
+// src/tests/renders.test.tsx contra o src/state/renderExpectations.ts de cada branch.
 export interface RendersPerTick {
   sensorCards: number;
   dashboard: number;

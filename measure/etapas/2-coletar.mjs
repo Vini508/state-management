@@ -25,12 +25,12 @@ import {
   WARMUP_TICKS,
   profilingOutDir,
   workDir,
-} from "./config.mjs";
-import { checkResults, printChecks } from "./lib/checks.mjs";
-import { LIGHTHOUSE_COLUMNS, runLighthouse } from "./lib/lighthouse.mjs";
-import { RUNTIME_COLUMNS, runOnce } from "./lib/runtime.mjs";
-import { startPreviews, stopPreviews } from "./lib/servers.mjs";
-import { appendCsv, currentResultsDir, formatDuration, readCsv, shuffled, sleep } from "./lib/util.mjs";
+} from "../config.mjs";
+import { checkResults, printChecks } from "../apoio/conferencias.mjs";
+import { LIGHTHOUSE_COLUMNS, runLighthouse } from "../medicoes/carregamento.mjs";
+import { RUNTIME_COLUMNS, runOnce } from "../medicoes/execucao.mjs";
+import { startPreviews, stopPreviews } from "../apoio/servidores.mjs";
+import { appendCsv, currentResultsDir, formatDuration, readCsv, shuffled, sleep } from "../apoio/util.mjs";
 
 const rehearsal = process.argv.includes("--rehearsal");
 const complete = process.argv.includes("--completar");

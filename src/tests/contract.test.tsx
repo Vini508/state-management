@@ -7,14 +7,14 @@ import {
   updateAllSensors,
   updateOneSensor,
   type Sensor,
-} from "./domain/sensors";
+} from "../domain/sensors";
 import {
   SensorProvider,
   useIsRunning,
   useSensor,
   useSensorActions,
   useSimulationMode,
-} from "./state";
+} from "../state";
 
 // Este arquivo é compartilhado entre todos os branches e não pode ser alterado
 // neles: ele prova que cada implementação de src/state cumpre o mesmo contrato.
