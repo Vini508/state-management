@@ -1,3 +1,6 @@
 node_modules
 __pycache__
 .current
+# Dados de ensaio e de teste rápido nunca entram no repositório.
+results/*/ensaio/
+results/*/teste-rapido/
