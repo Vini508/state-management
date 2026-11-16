@@ -131,8 +131,16 @@ export function checkResults(
     missingMetrics.length > 0 ? `${missingMetrics.length} rodadas sem LCP ou TBT` : "",
   );
 
-  const chromeVersions = new Set([...runtime, ...lighthouse].map((row) => versionOf(row.chrome)));
-  add("Mesma versão do Chrome em tudo", chromeVersions.size === 1, [...chromeVersions].join(", "));
+  // O Lighthouse só informa a versão principal do Chrome (o navegador reduz o
+  // restante no user agent), então as duas fontes são comparadas por ela.
+  const runtimeChrome = new Set(runtime.map((row) => versionOf(row.chrome)));
+  const lighthouseChrome = new Set(lighthouse.map((row) => versionOf(row.chrome)));
+  const majors = new Set([...runtimeChrome, ...lighthouseChrome].map((version) => version.split(".")[0]));
+  add(
+    "Mesma versão do Chrome em tudo",
+    runtimeChrome.size <= 1 && lighthouseChrome.size <= 1 && majors.size === 1,
+    [...runtimeChrome, ...lighthouseChrome].join(", "),
+  );
 
   const failures = [...runtimeAll, ...lighthouseAll].filter((row) => !isValid(row));
   add(

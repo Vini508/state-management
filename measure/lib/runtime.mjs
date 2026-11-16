@@ -29,6 +29,8 @@ export async function runOnce({
   const browser = await puppeteer.launch({
     executablePath: CHROME_PATH,
     headless: true,
+    // O limite de cada execução é o RUN_TIMEOUT_MS; o do protocolo fica acima dele.
+    protocolTimeout: RUN_TIMEOUT_MS + 60_000,
     defaultViewport: { ...VIEWPORT, deviceScaleFactor: 1 },
     args: [`--window-size=${VIEWPORT.width},${VIEWPORT.height}`, "--no-first-run"],
   });

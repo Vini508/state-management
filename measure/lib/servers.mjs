@@ -13,6 +13,8 @@ export async function startPreview(appDir, outDir, port) {
       "--port",
       String(port),
       "--strictPort",
+      // No modo profiling o servidor envia os cabeçalhos de isolamento de origem.
+      ...(outDir.startsWith("dist-profiling") ? ["--mode", "profiling"] : []),
     ],
     { cwd: appDir },
   );
