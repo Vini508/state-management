@@ -1,6 +1,29 @@
+import type { CSSProperties } from "react";
 import { SENSOR_COUNT, SENSOR_IDS, TICK_INTERVAL_MS } from "../domain/sensors";
 import { useIsRunning, useSensorActions, useSimulationMode } from "../state";
 import { SensorCard } from "./SensorCard";
+
+// A grade ocupa a tela inteira em qualquer tamanho: as colunas são o divisor
+// de SENSOR_COUNT que mais aproxima as células da proporção da grade de
+// 40 × 25 usada com 1.000 sensores.
+function gridColumns(count: number): number {
+  const target = Math.sqrt(count * 1.6);
+  let columns = 1;
+
+  for (let divisor = 2; divisor <= count; divisor += 1) {
+    if (count % divisor === 0 && Math.abs(divisor - target) < Math.abs(columns - target)) {
+      columns = divisor;
+    }
+  }
+
+  return columns;
+}
+
+const GRID_COLUMNS = gridColumns(SENSOR_COUNT);
+const GRID_STYLE = {
+  "--grid-columns": GRID_COLUMNS,
+  "--grid-rows": SENSOR_COUNT / GRID_COLUMNS,
+} as CSSProperties;
 
 export function Dashboard() {
   const mode = useSimulationMode();
@@ -66,7 +89,7 @@ export function Dashboard() {
         </fieldset>
       </header>
 
-      <section className="sensor-grid" aria-label="Sensores">
+      <section className="sensor-grid" aria-label="Sensores" style={GRID_STYLE}>
         {SENSOR_IDS.map((id) => (
           <SensorCard key={id} id={id} />
         ))}

@@ -6,7 +6,11 @@ export interface Sensor {
   value: number;
 }
 
-export const SENSOR_COUNT = 1000;
+const DEFAULT_SENSOR_COUNT = 1000;
+
+// O padrão é o tamanho descrito no trabalho. VITE_SENSOR_COUNT troca o número
+// de sensores no build, para medir a aplicação em outros tamanhos.
+export const SENSOR_COUNT = readSensorCount(import.meta.env.VITE_SENSOR_COUNT);
 export const TICK_INTERVAL_MS = 15;
 export const INITIAL_SEED = 0x12345678;
 const INITIAL_VALUES_SEED = 0x9e3779b9;
@@ -33,6 +37,12 @@ const INITIAL_SENSORS: readonly Sensor[] = INITIAL_VALUES.map((value, index) =>
 
 export function createInitialSensors(): Sensor[] {
   return [...INITIAL_SENSORS];
+}
+
+function readSensorCount(value: string | undefined): number {
+  const count = Number(value);
+
+  return Number.isInteger(count) && count > 0 ? count : DEFAULT_SENSOR_COUNT;
 }
 
 function createInitialValues(): number[] {
