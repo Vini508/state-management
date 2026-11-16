@@ -1,0 +1,20 @@
+{
+  "name": "tcc-state-management-measure",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Coletor de medições do experimento. Tem dependências próprias para não alterar as da aplicação.",
+  "scripts": {
+    "setup": "node setup.mjs",
+    "rehearsal": "node collect.mjs --rehearsal",
+    "collect": "node collect.mjs",
+    "verify": "node verify.mjs",
+    "analyze": "node analyze.mjs",
+    "inspect": "node inspect.mjs"
+  },
+  "dependencies": {
+    "chrome-launcher": "1.2.3",
+    "lighthouse": "12.8.2",
+    "puppeteer-core": "25.17.0"
+  }
+}
