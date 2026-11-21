@@ -383,8 +383,14 @@ def main():
             lines.append(f"- LCP, Zustand menos {other}: {fmt(pair['diferenca'])} ms, p ajustado {fmt(pair['p_ajustado'], 3)}, "
                          f"{'significativo' if pair['significativo'] else 'não significativo'}.")
         lower = all(pair["significativo"] and pair["diferenca"] < 0 for pair in lcp_pairs)
+        # Decisão de 21/11/2026 (plano, seções 1.1 e 11): um LCP significativamente
+        # maior que o de ao menos uma das duas contraria o carregamento e refuta a H2.
+        higher = any(pair["significativo"] and pair["diferenca"] > 0 for pair in lcp_pairs)
         if smallest is not None:
-            verdict = "refutada" if not smallest else ("confirmada" if lower else "relativizada")
+            if not smallest or higher:
+                verdict = "refutada"
+            else:
+                verdict = "confirmada" if lower else "relativizada"
             lines += ["", f"**Veredito pela regra: H2 {verdict}.**"]
     lines.append("")
 
