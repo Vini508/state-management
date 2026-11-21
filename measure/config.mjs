@@ -34,8 +34,10 @@ export const IMPLEMENTATIONS = [
 
 export const SCENARIOS = ["simultaneous", "localized"];
 export const CORE_SENSOR_COUNT = 1000;
-// Extensão de escala (parte C): só no cenário localizado.
-export const SCALE_SENSOR_COUNTS = [100, 10000];
+// Extensão de escala (parte C): só no cenário localizado. O tamanho de 1.000
+// repete o do núcleo para que a curva inteira saia de uma mesma sessão
+// (decisão de 21/11/2026, Docs/plano-medicao.md, seção 1.1).
+export const SCALE_SENSOR_COUNTS = [100, 1000, 10000];
 export const SCALE_SCENARIO = "localized";
 
 export const MEASURED_TICKS = 2000;

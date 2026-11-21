@@ -22,7 +22,8 @@ import { run, setCurrentResultsDir, timestamp, writeCsv } from "../apoio/util.mj
 
 // O tar do Windows entende caminhos com letra de unidade; o do Git Bash, não.
 const TAR = path.join(process.env.SystemRoot ?? "C:\\Windows", "System32", "tar.exe");
-const SENSOR_COUNTS = [CORE_SENSOR_COUNT, ...SCALE_SENSOR_COUNTS];
+// Sem repetição: o build de 1.000 sensores serve ao núcleo e à parte C.
+const SENSOR_COUNTS = [...new Set([CORE_SENSOR_COUNT, ...SCALE_SENSOR_COUNTS])];
 
 function git(...args) {
   return run("git", args, { cwd: REPO_DIR });

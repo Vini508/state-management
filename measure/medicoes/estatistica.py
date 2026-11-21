@@ -311,8 +311,12 @@ def main():
     # --- Curva de escala ---
     scale_lines = []
     if not descriptive_table.empty:
+        # Só a parte C: a curva usa dados de uma mesma sessão, e o ponto de 1.000
+        # sensores da parte A fica de fora (decisão de 21/11/2026, plano, seção 1.1).
         scale = descriptive_table[
-            (descriptive_table["medida"] == "tick_medio_ms") & (descriptive_table["cenario"] == "localized")
+            (descriptive_table["parte"] == "C")
+            & (descriptive_table["medida"] == "tick_medio_ms")
+            & (descriptive_table["cenario"] == "localized")
         ]
         if scale["sensores"].nunique() > 1:
             scale_figure(scale, figures / "escala_tick_medio_ms")

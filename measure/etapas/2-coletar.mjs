@@ -89,7 +89,7 @@ const PARTS = [
   },
   {
     id: "C",
-    title: "Parte C: extensão de escala (cenário localizado, 100 e 10.000 sensores)",
+    title: "Parte C: extensão de escala (cenário localizado, 100, 1.000 e 10.000 sensores)",
     file: runtimeFile,
     columns: RUNTIME_COLUMNS,
     combos: runtimeCombos("C"),
