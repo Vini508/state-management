@@ -348,7 +348,7 @@ def main():
     lines += ["## H1: rastreabilidade do Redux ao custo de mais código", ""]
     if code_file.exists():
         code = pd.read_csv(code_file).set_index("implementacao")
-        lines += ["| Implementação | Linhas de código | Funções da biblioteca | Arquivos de estado | Componentes acoplados |",
+        lines += ["| Implementação | Linhas de código | Itens da API | Arquivos de estado | Componentes acoplados |",
                   "|---|---|---|---|---|"]
         for name in ALL:
             if name in code.index:
@@ -356,11 +356,22 @@ def main():
                 lines.append(f"| {IMPLEMENTATIONS[name][0]} | {row['linhas_de_codigo']} | {row['funcoes_da_biblioteca']} | "
                              f"{row['arquivos_de_estado']} | {row['componentes_acoplados']} |")
         if all(name in code.index for name in LIBRARIES):
-            more_lines = all(code.loc["redux", "linhas_de_codigo"] > code.loc[n, "linhas_de_codigo"] for n in ["zustand", "jotai"])
-            more_functions = all(code.loc["redux", "funcoes_da_biblioteca"] > code.loc[n, "funcoes_da_biblioteca"] for n in ["zustand", "jotai"])
-            lines += ["", f"- Redux tem mais linhas de código que Zustand e Jotai: {'sim' if more_lines else 'não'}.",
-                      f"- Redux usa mais funções da biblioteca que Zustand e Jotai: {'sim' if more_functions else 'não'}.",
-                      "- Os três critérios de rastreabilidade são avaliados à mão (seção 11 do plano)."]
+            # Decisão de 21/11/2026 (plano, seções 1.1 e 11): o custo do Redux só é maior que o
+            # de uma biblioteca quando ele a supera nas duas medidas; empate em qualquer uma não conta.
+            redux = code.loc["redux"]
+            higher_cost = []
+            lines.append("")
+            for other in ["zustand", "jotai"]:
+                more_lines = redux["linhas_de_codigo"] > code.loc[other, "linhas_de_codigo"]
+                more_items = redux["funcoes_da_biblioteca"] > code.loc[other, "funcoes_da_biblioteca"]
+                if more_lines and more_items:
+                    higher_cost.append(IMPLEMENTATIONS[other][0])
+                lines.append(f"- Redux em relação ao {IMPLEMENTATIONS[other][0]}: mais linhas de código, "
+                             f"{'sim' if more_lines else 'não'}; mais itens da API, {'sim' if more_items else 'não'}; "
+                             f"custo maior, {'sim' if more_lines and more_items else 'não'}.")
+            lines += [f"- Redux tem custo maior que: {' e '.join(higher_cost) if higher_cost else 'nenhuma das duas'}.",
+                      "- Os três critérios de rastreabilidade são avaliados à mão (seção 11 do plano); "
+                      "o veredito combina esses critérios com a linha acima."]
     lines.append("")
 
     lines += ["## H2: Zustand com menor pacote e menor carregamento", ""]
