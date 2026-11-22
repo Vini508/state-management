@@ -1,0 +1,94 @@
+{
+  "registrado_em": "2026-11-22T13:24:27.835Z",
+  "commits": {
+    "context": "ceac56c1f6607695191a85af97b9265e898038e5",
+    "redux": "d1ef004bb2f4d4044596d0e07cdaffc238166cc0",
+    "zustand": "1181ca4b7bf4198ca01a554bde0738eb94815b0c",
+    "jotai": "3e453408837f6d738c4f15ec571b18fd4a0e3bab"
+  },
+  "alteracoes_sem_commit": false,
+  "hardware": {
+    "processador": "Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz",
+    "nucleos_logicos": 8,
+    "memoria_gb": 7.8,
+    "armazenamento": [
+      {
+        "FriendlyName": "NVMe KBG40ZNS256G NVMe KIOXIA 256GB",
+        "MediaType": "SSD",
+        "Size": 256060514304
+      }
+    ]
+  },
+  "sistema": {
+    "nome": "Windows 10 Home Single Language",
+    "versao": "10.0.19045",
+    "arquitetura": "x64"
+  },
+  "ferramentas": {
+    "chrome": "Chrome/158.0.8127.37",
+    "node": "v22.18.0",
+    "npm": "10.9.3",
+    "lighthouse": "12.8.2",
+    "puppeteer-core": "25.17.0",
+    "chrome-launcher": "1.2.3"
+  },
+  "dependencias": {
+    "context": {
+      "@testing-library/react": "16.3.3",
+      "@types/node": "24.19.1",
+      "@types/react": "19.3.0",
+      "@types/react-dom": "19.3.0",
+      "@vitejs/plugin-react": "6.1.1",
+      "jsdom": "29.1.1",
+      "react": "19.3.0",
+      "react-dom": "19.3.0",
+      "typescript": "6.0.3",
+      "vite": "8.3.5",
+      "vitest": "5.0.3"
+    },
+    "redux": {
+      "@reduxjs/toolkit": "2.13.0",
+      "@testing-library/react": "16.3.3",
+      "@types/node": "24.19.1",
+      "@types/react": "19.3.0",
+      "@types/react-dom": "19.3.0",
+      "@vitejs/plugin-react": "6.1.1",
+      "jsdom": "29.1.1",
+      "react": "19.3.0",
+      "react-dom": "19.3.0",
+      "react-redux": "9.3.1",
+      "typescript": "6.0.3",
+      "vite": "8.3.5",
+      "vitest": "5.0.3",
+      "immer": "11.2.9"
+    },
+    "zustand": {
+      "@testing-library/react": "16.3.3",
+      "@types/node": "24.19.1",
+      "@types/react": "19.3.0",
+      "@types/react-dom": "19.3.0",
+      "@vitejs/plugin-react": "6.1.1",
+      "jsdom": "29.1.1",
+      "react": "19.3.0",
+      "react-dom": "19.3.0",
+      "typescript": "6.0.3",
+      "vite": "8.3.5",
+      "vitest": "5.0.3",
+      "zustand": "5.0.16"
+    },
+    "jotai": {
+      "@testing-library/react": "16.3.3",
+      "@types/node": "24.19.1",
+      "@types/react": "19.3.0",
+      "@types/react-dom": "19.3.0",
+      "@vitejs/plugin-react": "6.1.1",
+      "jotai": "3.0.1",
+      "jsdom": "29.1.1",
+      "react": "19.3.0",
+      "react-dom": "19.3.0",
+      "typescript": "6.0.3",
+      "vite": "8.3.5",
+      "vitest": "5.0.3"
+    }
+  }
+}

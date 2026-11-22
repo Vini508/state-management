@@ -1,0 +1,5 @@
+implementacao,arquivos_de_estado,linhas_de_codigo,funcoes_da_biblioteca,componentes_acoplados
+context,3,128,4,0
+redux,4,126,6,0
+zustand,2,78,1,0
+jotai,3,98,6,0

@@ -1,0 +1,59 @@
+{
+  "context": {
+    "arquivos": [
+      "src/state/index.ts",
+      "src/state/SensorContext.tsx",
+      "src/state/sensorReducer.ts"
+    ],
+    "funcoes": [
+      "createContext",
+      "useContext",
+      "useMemo",
+      "useReducer"
+    ],
+    "componentes": []
+  },
+  "redux": {
+    "arquivos": [
+      "src/state/index.ts",
+      "src/state/SensorProvider.tsx",
+      "src/state/simulationSlice.ts",
+      "src/state/store.ts"
+    ],
+    "funcoes": [
+      "Provider",
+      "configureStore",
+      "createSlice",
+      "original",
+      "useDispatch",
+      "useSelector"
+    ],
+    "componentes": []
+  },
+  "zustand": {
+    "arquivos": [
+      "src/state/index.ts",
+      "src/state/sensorStore.ts"
+    ],
+    "funcoes": [
+      "create"
+    ],
+    "componentes": []
+  },
+  "jotai": {
+    "arquivos": [
+      "src/state/index.ts",
+      "src/state/sensorAtoms.ts",
+      "src/state/SensorProvider.tsx"
+    ],
+    "funcoes": [
+      "Provider",
+      "RESET",
+      "atom",
+      "atomWithReset",
+      "useAtomValue",
+      "useSetAtom"
+    ],
+    "componentes": []
+  }
+}
