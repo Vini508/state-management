@@ -54,6 +54,11 @@ export const SHUFFLE_SEED = 20261115;
 export const VIEWPORT = { width: 1920, height: 1080 };
 export const PAUSE_BETWEEN_RUNS_MS = 2000;
 export const RUN_TIMEOUT_MS = 180_000;
+// Parte C: no ensaio, a Context API com 10.000 sensores chegou a 153,6 s. Com
+// 180 s, as execuções mais lentas tenderiam a ser invalidadas e a média desse
+// tamanho sairia artificialmente baixa. O limite só protege contra travamentos
+// (decisão de 22/11/2026, Docs/plano-medicao.md, seção 1.1).
+export const SCALE_RUN_TIMEOUT_MS = 600_000;
 export const BASE_PORT = 4173;
 
 // Um frame a 60 Hz dura 16,7 ms; acima de um frame e meio, ao menos um foi perdido.

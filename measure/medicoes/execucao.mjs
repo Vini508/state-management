@@ -25,12 +25,13 @@ export async function runOnce({
   sensorCount,
   measuredTicks = MEASURED_TICKS,
   warmupTicks = WARMUP_TICKS,
+  runTimeoutMs = RUN_TIMEOUT_MS,
 }) {
   const browser = await puppeteer.launch({
     executablePath: CHROME_PATH,
     headless: true,
-    // O limite de cada execução é o RUN_TIMEOUT_MS; o do protocolo fica acima dele.
-    protocolTimeout: RUN_TIMEOUT_MS + 60_000,
+    // O limite de cada execução é o runTimeoutMs; o do protocolo fica acima dele.
+    protocolTimeout: runTimeoutMs + 60_000,
     defaultViewport: { ...VIEWPORT, deviceScaleFactor: 1 },
     args: [`--window-size=${VIEWPORT.width},${VIEWPORT.height}`, "--no-first-run"],
   });
@@ -51,13 +52,13 @@ export async function runOnce({
     // As métricas do Chrome são lidas no início e no fim das atualizações medidas.
     await withTimeout(
       page.evaluate(() => window.__measurement.started),
-      RUN_TIMEOUT_MS,
+      runTimeoutMs,
       "início da medição",
     );
     const before = await page.metrics();
     const result = await withTimeout(
       page.evaluate(() => window.__measurement.finished),
-      RUN_TIMEOUT_MS,
+      runTimeoutMs,
       "fim da medição",
     );
     const after = await page.metrics();

@@ -17,6 +17,8 @@ import {
   MEASURED_TICKS,
   PAUSE_BETWEEN_RUNS_MS,
   REHEARSAL_BLOCKS,
+  RUN_TIMEOUT_MS,
+  SCALE_RUN_TIMEOUT_MS,
   SCALE_SCENARIO,
   SCALE_SENSOR_COUNTS,
   SCENARIOS,
@@ -78,6 +80,7 @@ const PARTS = [
     columns: RUNTIME_COLUMNS,
     combos: runtimeCombos("A"),
     outDirOf: (combo) => profilingOutDir(combo.sensorCount),
+    runTimeoutMs: RUN_TIMEOUT_MS,
   },
   {
     id: "B",
@@ -94,6 +97,7 @@ const PARTS = [
     columns: RUNTIME_COLUMNS,
     combos: runtimeCombos("C"),
     outDirOf: (combo) => profilingOutDir(combo.sensorCount),
+    runTimeoutMs: SCALE_RUN_TIMEOUT_MS,
   },
 ];
 
@@ -172,6 +176,7 @@ async function runPart(part, partIndex) {
                 sensorCount: combo.sensorCount,
                 measuredTicks,
                 warmupTicks,
+                runTimeoutMs: part.runTimeoutMs,
               });
               appendCsv(part.file, part.columns, { ...base, valido: 1, ...row });
               fs.writeFileSync(
