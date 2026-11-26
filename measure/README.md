@@ -1,6 +1,6 @@
 # Coletor das medições
 
-Programa que mede as quatro versões da aplicação e calcula a estatística. O procedimento completo, com a justificativa de cada escolha, está em `Docs/plano-medicao.md`.
+Programa que mede as quatro versões da aplicação e calcula a estatística. O procedimento completo, com a justificativa de cada escolha, está descrito no TCC. Os dados da coleta usada no trabalho estão em `results/2026-11-22_1024/` (ver o `README.md` da raiz).
 
 ## Como usar
 
@@ -39,5 +39,5 @@ Dentro desta pasta, na ordem:
 |---|---|---|
 | `execucao.mjs` | Tempo de processamento por atualização, ocupação da thread, frames, renderização, memória heap | H3 e complementares |
 | `carregamento.mjs` | LCP e TBT | H2 |
-| `codigo.mjs` | Linhas de código, funções da biblioteca, tamanho do pacote | H1 e H2 |
+| `codigo.mjs` | Linhas de código, itens da API da biblioteca, tamanho do pacote | H1 e H2 |
 | `estatistica.py` | Testes estatísticos sobre tudo acima | H1, H2 e H3 |
