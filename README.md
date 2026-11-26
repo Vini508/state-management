@@ -69,3 +69,28 @@ Os componentes acessam o estado apenas pelos hooks exportados por `src/state/ind
 - **Renderizações:** `src/tests/renders.test.tsx` é compartilhado e conta quantas vezes cada componente renderiza em uma atualização. Os valores esperados de cada versão ficam em `src/state/renderExpectations.ts`.
 
 Mudanças em código compartilhado são feitas no `main` e levadas às demais branches por merge.
+
+## Medições do TCC
+
+Os dados usados no trabalho foram coletados em 22/11/2026 pelo programa de `measure/` (ver `measure/README.md`) e estão em `measure/results/2026-11-22_1024/`.
+
+O commit medido de cada versão está marcado com uma etiqueta. Para ver o código exatamente como foi medido, use `git checkout <etiqueta>`.
+
+| Etiqueta | Branch | Commit |
+|---|---|---|
+| `medicao-main` | `main` | `ceac56c` |
+| `medicao-redux` | `redux` | `d1ef004` |
+| `medicao-zustand` | `zustand` | `1181ca4` |
+| `medicao-jotai` | `jotai` | `3e45340` |
+
+| Arquivo ou pasta | Conteúdo |
+|---|---|
+| `ambiente.json` | Hardware, sistema, versões das ferramentas e das dependências, e os commits medidos |
+| `execucoes.csv` | Uma linha por execução com a aplicação em funcionamento (620 execuções) |
+| `lighthouse.csv` | Uma linha por rodada do Lighthouse (124 rodadas) |
+| `pacote.csv` | Tamanho do JavaScript do pacote de cada versão, com e sem gzip |
+| `codigo.csv` e `codigo-detalhe.json` | Contagens da camada de estado: arquivos, linhas, itens da API da biblioteca (coluna `funcoes_da_biblioteca`) e componentes acoplados |
+| `bruto/` | Dados completos de cada execução, inclusive a duração de cada uma das 2.000 atualizações medidas |
+| `analise/` | Estatística descritiva, testes, comparação entre pares, curva de escala, veredito das hipóteses e figuras |
+
+O primeiro bloco de cada conjunto de medições é de aquecimento e fica fora da análise. O `analise/hipoteses.md` remete ao plano de medição, um documento que não faz parte deste repositório; as mesmas regras de decisão estão descritas no TCC.
